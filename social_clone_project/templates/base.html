@@ -23,7 +23,7 @@
 <body>
     <nav class="navbar navbar-dark bg-dark mynav" role="navigation" id="navbar">
         <div class="container">
-            <a class="navbar-brand mynav" href="{% url 'home' %}">Space Social</a>
+            <a class="navbar-brand mynav" href="{% url 'home' %}"><img src="{% static 'images\vectorstock_16461369.jpg' %}" width="35" height="35" class="d-inline-block align-top" alt="" loading="lazy">Space Social</a>
 
             <ul class="nav justify-content-end">
                 {% if user.is_authenticated %}
