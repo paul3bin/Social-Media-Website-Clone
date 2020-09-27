@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from . import models
 
 
 class CreateGroup(LoginRequiredMixin, generic.CreateView):
@@ -35,4 +36,22 @@ class JoinGroup(LoginRequiredMixin, generic.RedirectView):
         return super().get(request, *args, **kwargs)
 
 class LeaveGroup(LoginRequiredMixin, generic.RedirectView):
-    pass
+    
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse('groups:single', kwargs={'slug':self.kwargs.get('slug')})
+
+    def get(self, request, *args, **kwargs):
+        try:
+            membership = models.GroupMember.objects.filter(
+                user = self.request.user,
+                group__slug = self.kwargs.get('slug')
+            ).get()
+        
+        except models.GroupMember.DoesNotExist:
+            messages.warning(self.request, 'Sorry your are not in this group!')
+        
+        else:
+            membership.delete()
+            messages.success(self.request, 'You have left the group.')
+
+        return super().get(request, *args, **kwargs)
