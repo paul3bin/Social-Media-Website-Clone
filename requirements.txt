@@ -2,3 +2,4 @@ django
 virtualenv
 misaka
 django-braces
+django-bootstrap4
